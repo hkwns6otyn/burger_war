@@ -53,6 +53,7 @@ $ git merge upstream
 ```bash:
 # ちゃんと設定できているかどうかの確認
 $ git branch -a
+
 #  dev
 #* master
 #  remotes/master_stream/dev
@@ -89,10 +90,10 @@ export TURTLEBOT3_MODEL=burger
 下記がないとうまく動作しないスクリプトがあった。
 ```bash:
 # teleop-twist-keyboard (キーボード操作のライブラリ)
-sudo apt-get install ros-kinetic-teleop-twist-keyboard
+$ sudo apt-get install ros-kinetic-teleop-twist-keyboard
 # burger_navigation関連のエラーが出ていたので解決するするために導入
-sudo apt-get install ros-kinetic-navigation
-sudo apt-get install ros-kinetic-gmapping ros-kinetic-amcl ros-kinetic-map-server 
+$ sudo apt-get install ros-kinetic-navigation
+$ sudo apt-get install ros-kinetic-gmapping ros-kinetic-amcl ros-kinetic-map-server 
 ```
 
 # メモ(For Matsumura)
@@ -100,8 +101,8 @@ sudo apt-get install ros-kinetic-gmapping ros-kinetic-amcl ros-kinetic-map-serve
 その際の手順。
 ``` bash:
 # obstacle_detectorに必要な数学ライブラリ
-sudo apt-get install -y libarmadillo-dev libarmadillo6 
+$ sudo apt-get install -y libarmadillo-dev libarmadillo6 
 # obstacle_detectorのROSファイルのダウンロード
-cd ~/catkin_ws/src/
-git clone https://github.com/tysik/obstacle_detector.git
+$ cd ~/catkin_ws/src/
+$ git clone https://github.com/tysik/obstacle_detector.git
 ```
