@@ -4,5 +4,7 @@
 <!-- Your robot control node run  red side-->  
   <include file="$(find burger_war)/launch/your_burger.launch"/>      
 <!-- enemy bot run  blue side-->
+  <group ns="enemy_bot">  
+  </group>
 </launch>
 
