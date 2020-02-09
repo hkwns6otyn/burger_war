@@ -18,8 +18,23 @@
       <param name="side" value="b"/>          
     </group>
     
-    <node pkg="burger_war" type="war_state_publisher.py" name="warState" output="screen"/>    
+    <include file="$(find burger_war)/launch/self_location_estimation.launch">
+      <group if="$(eval side=='r')">
+        <arg name="side" value="r" />
+        <arg name="initial_pose_x" default="-1.3"/>
+        <arg name="initial_pose_y" default="0.0"/>
+      </group>
+      <group if="$(eval side=='b')">
+        <arg name="side" value="b" />
+          <arg name="initial_pose_x" default="1.3"/>
+          <arg name="initial_pose_y" default="0.0"/>
+      </group>
+      
     
+    </include>
+    
+    <node pkg="burger_war" type="war_state_publisher.py" name="warState" output="screen"/>    
+    <node pkg="burger_war" type="tmp_myState_listener.py" name="myState" output="screen"/>    
     <!-- End of your space  -->
 </launch>
 

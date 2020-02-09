@@ -1,11 +1,8 @@
 <?xml version="1.0"?>
 <launch>
 
-<!-- Your robot control node run  red side-->
-  <include file="$(find burger_war)/launch/your_burger.launch">
-    <arg name="side" value="r" />
-  </include>
-
+<!-- Your robot control node run  red side-->  
+  <include file="$(find burger_war)/launch/your_burger.launch"/>      
 <!-- enemy bot run  blue side-->
 </launch>
 
