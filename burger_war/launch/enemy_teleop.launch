@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+
+<!-- enemy bot run  blue side-->
+  <group ns="enemy_bot">    
+    <node pkg="turtlebot3_teleop" type="turtlebot3_teleop_key" name="turtlebot3_teleop_keyboard" output="screen"> </node>
+  </group>
+
+</launch>
+
+
