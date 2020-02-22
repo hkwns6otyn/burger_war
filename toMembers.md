@@ -106,3 +106,19 @@ $ sudo apt-get install -y libarmadillo-dev libarmadillo6
 $ cd ~/catkin_ws/src/
 $ git clone https://github.com/tysik/obstacle_detector.git
 ```
+
+# 試合の初期化
+start2.shを止めたと後に、下記スクリプトを実行
+```bash:
+# 試合情報リセットスクリプト
+$ bash scripts/reset.sh
+```
+
+
+(参考までに)
+```bash:
+# ロボットの位置の初期化
+$ rosservice call /gazebo/reset_simulation "{}"
+# 審判サーバーのリセット
+$ bash judge/test_scripts/reset_server.sh localhost:5000
+```
