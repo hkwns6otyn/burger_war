@@ -2,6 +2,7 @@ import math
 
 import rospy
 from geometry_msgs.msg import PoseStamped
+from burger_war.msg import war_state
 
 def getTargetsMapOnGAZEBO():
     Targets = {
@@ -37,7 +38,7 @@ def getTargetsMap():
     }
     return Targets
 
-distance = 0.25  # magic parm of distance to the target
+distance = 0.2  # magic parm of distance to the target
 
 def getGoal(targetPos, targetName):
     goalPos = targetPos
@@ -73,13 +74,26 @@ def getGoal(targetPos, targetName):
 
     return target_pos
 
-def getNearestTarget(Targets, x, y):
+def getNearestTarget(target_map, x, y, war_state):
+    war_state_dict = converter(war_state)        
+
     dist = 99.0    
-    nearestTarget = "a"
-    for key in Targets:        
-        tmp = (Targets[key][0] - x) **2 + (Targets[key][1] - y) **2 
-        if tmp < dist:            
+    nearestTarget = ""
+    for key in target_map:        
+        tmp = (target_map[key][0] - x) **2 + (target_map[key][1] - y) **2                 
+        if war_state_dict[key]['owner'] != war_state.my_side and tmp < dist:            
             nearestTarget = key
             dist = tmp
-    return nearestTarget
 
+    
+    return nearestTarget
+    
+def converter(war_state):
+    war_state_dict = {}    
+
+    for i in range(len(war_state.target_names)):                
+        war_state_i = {}
+        war_state_i['owner'] = war_state.target_owner[i]
+        war_state_i['point'] = war_state.target_point[i]
+        war_state_dict[war_state.target_names[i]] = war_state_i
+    return war_state_dict
