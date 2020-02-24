@@ -21,14 +21,25 @@ class WarStateBot(object):
     def fetchWarState(self):        
         resp = requests.get("http://localhost:5000/warState")        
         resp_json = resp.json()
-        self.state.time = resp_json['time']                
+        self.state.time = resp_json['time']       
+        self.state.my_side = self.side         
         self.state.my_point = resp_json['scores'][self.side]        
+        self.state.target_names = []
+        self.state.target_owner = []
+        self.state.target_point = []
+
+        for target in resp_json['targets']:            
+            self.state.target_names.append(target['name'])
+            self.state.target_owner.append(target['player'])                        
+            self.state.target_point.append(int(target['point']))
+            
         if self.side == 'r':
             self.state.enemy_point = resp_json['scores']['b']        
         elif self.side == 'b':
             self.state.enemy_point = resp_json['scores']['r']        
-        else:
+        else:            
             rospy.logerr("UNEXPECTED SIDE NAME : {}".format(self.side))
+
 
     def strategy(self):        
         # rospy.loginfo("MY SIDE IS {}".format(self.side))
@@ -39,8 +50,7 @@ class WarStateBot(object):
             self.fetchWarState()
             if self.displayLog:                
                 rospy.loginfo(self.state.time)
-                rospy.loginfo(self.state.my_point-self.state.enemy_point)
-                        
+                rospy.loginfo(self.state.my_point-self.state.enemy_point)                        
             # publish war_state topic
             self.war_state_pub.publish(self.state)
 
@@ -49,5 +59,5 @@ class WarStateBot(object):
 if __name__ == '__main__':    
     mySide = rospy.get_param("side", default="b")        
     rospy.init_node('war_state')        
-    bot = WarStateBot(mySide = mySide, displayLog=True)    
+    bot = WarStateBot(mySide = mySide, displayLog=False)    
     bot.strategy()
