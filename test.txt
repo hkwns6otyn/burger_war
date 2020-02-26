@@ -1,0 +1,9 @@
+cd ~/catkin_ws/src/burger_war
+roslaunch burger_war setup_sim.launch
+bash scripts/start.sh
+
+roslaunch burger_war burger_teleop.launch
+
+rosservice call /gazebo/reset_simulation "{}"
+
+bash scripts/reset.sh
