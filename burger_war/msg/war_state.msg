@@ -1,3 +1,7 @@
 float64 time
-uint8 my_point
-uint8 enemy_point
+string my_side
+uint16 my_point
+uint16 enemy_point
+string[] target_names
+string[] target_owner
+uint16[] target_point
