@@ -56,7 +56,8 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
   FILES
   war_state.msg
-  CvCam.msg
+  CvRect.msg
+  cv_rect.msg
 )
 
 ## Generate services in the 'srv' folder

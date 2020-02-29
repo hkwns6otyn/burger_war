@@ -4,12 +4,13 @@ import rospy
 from geometry_msgs.msg import PoseStamped
 from burger_war.msg import war_state
 
+
 def getTargetsMapOnGAZEBO():
     Targets = {
         "FriedShrimp_N":    [0.0,       +0.35/2.0],
         "FriedShrimp_S":    [0.0,       -0.35/2.0],
         "FriedShrimp_E":    [+0.35/2.0, 0.0],
-        "FriedShrimp_W":    [-0.35/2.0, 0.0],        
+        "FriedShrimp_W":    [-0.35/2.0, 0.0],
         "Omelette_N":       [+0.53,     +0.53+0.15/2.0],
         "Omelette_S":       [+0.53,     +0.53-0.15/2.0],
         "Tomato_N":         [-0.53,     +0.53+0.15/2.0],
@@ -21,12 +22,13 @@ def getTargetsMapOnGAZEBO():
     }
     return Targets
 
-def getTargetsMap():    
+
+def getTargetsMap():
     Targets = {
         "FriedShrimp_N":    [+0.35/2.0,         0.0],
-        "FriedShrimp_S":    [-0.35/2.0,         0.0],        
+        "FriedShrimp_S":    [-0.35/2.0,         0.0],
         "FriedShrimp_E":    [0.0,               -0.35/2.0],
-        "FriedShrimp_W":    [0.0,               +0.35/2.0],        
+        "FriedShrimp_W":    [0.0,               +0.35/2.0],
         "Omelette_N":       [+0.53+0.15/2.0,    -0.53],
         "Omelette_S":       [+0.53-0.15/2.0,    -0.53],
         "Tomato_N":         [+0.53+0.15/2.0,    +0.53],
@@ -34,16 +36,18 @@ def getTargetsMap():
         "OctopusWiener_N":  [-0.53+0.15/2.0,    -0.53],
         "OctopusWiener_S":  [-0.53-0.15/2.0,    -0.53],
         "Pudding_N":        [-0.53+0.15/2.0,    +0.53],
-        "Pudding_S":        [-0.53-0.15/2.0,    +0.53],        
+        "Pudding_S":        [-0.53-0.15/2.0,    +0.53],
     }
     return Targets
 
+
 distance = 0.2  # magic parm of distance to the target
+
 
 def getGoal(targetPos, targetName):
     goalPos = targetPos
-    goalDire = [0.0,0.0,0.0,1.0]
-    
+    goalDire = [0.0, 0.0, 0.0, 1.0]
+
     if targetName[-1] == "N":
         goalPos[0] = goalPos[0] + distance
         goalDire[2] = 1.0
@@ -61,7 +65,7 @@ def getGoal(targetPos, targetName):
         goalDire[2] = math.sin(math.pi/4.0)
         goalDire[3] = math.cos(math.pi/4.0)
     elif targetName == "enemy":
-        print("Target is ENEMY!!")        
+        print("Target is ENEMY!!")
     else:
         print("ERROR!!!")
 
@@ -74,24 +78,25 @@ def getGoal(targetPos, targetName):
 
     return target_pos
 
-def getNearestTarget(target_map, x, y, war_state):
-    war_state_dict = converter(war_state)        
 
-    dist = 99.0    
+def getNearestTarget(target_map, x, y, war_state):
+    war_state_dict = converter(war_state)
+
+    dist = 99.0
     nearestTarget = ""
-    for key in target_map:        
-        tmp = (target_map[key][0] - x) **2 + (target_map[key][1] - y) **2                 
-        if war_state_dict[key]['owner'] != war_state.my_side and tmp < dist:            
+    for key in target_map:
+        tmp = (target_map[key][0] - x) ** 2 + (target_map[key][1] - y) ** 2
+        if war_state_dict[key]['owner'] != war_state.my_side and tmp < dist:
             nearestTarget = key
             dist = tmp
 
-    
     return nearestTarget
-    
-def converter(war_state):
-    war_state_dict = {}    
 
-    for i in range(len(war_state.target_names)):                
+
+def converter(war_state):
+    war_state_dict = {}
+
+    for i in range(len(war_state.target_names)):
         war_state_i = {}
         war_state_i['owner'] = war_state.target_owner[i]
         war_state_i['point'] = war_state.target_point[i]
