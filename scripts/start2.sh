@@ -11,5 +11,5 @@ elif [ "$1" -eq "2" ]
 then
     roslaunch burger_war sim_level_2_teriyaki.launch    
 else
-    roslaunch burger_war sim_robot_run2.launch
+    roslaunch burger_war sim_robot_run_2.launch
 fi
