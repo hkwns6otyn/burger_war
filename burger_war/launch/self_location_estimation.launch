@@ -50,10 +50,10 @@
     <param name="laser_model_type"          value="likelihood_field"/>
 
     <param name="odom_model_type"           value="diff"/>
-    <param name="odom_alpha1"               value="0.3"/>
-    <param name="odom_alpha2"               value="0.3"/>
-    <param name="odom_alpha3"               value="0.3"/>
-    <param name="odom_alpha4"               value="0.3"/>
+    <param name="odom_alpha1"               value="0.1"/>
+    <param name="odom_alpha2"               value="0.1"/>
+    <param name="odom_alpha3"               value="0.1"/>
+    <param name="odom_alpha4"               value="0.1"/>
     <param name="odom_frame_id"             value="odom"/>
     <param name="base_frame_id"             value="base_footprint"/>
     <param name="global_frame_id"           value="map"/>
@@ -83,7 +83,7 @@
 
   <!-- rviz -->
   <group if="$(arg open_rviz)"> 
-    <node pkg="rviz" type="rviz" name="rviz" required="true" args="-d $(find burger_navigation)/rviz/burger_navigation.rviz">
+    <node pkg="rviz" type="rviz" name="rviz" required="true" args="-d $(find burger_war)/rviz/rvizConfig.rviz">
       <remap from="/move_base_simple/goal" to="move_base_simple/goal"/>
     </node>
   </group>
