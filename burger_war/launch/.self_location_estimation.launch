@@ -3,8 +3,6 @@
 <launch>
   <!-- Arguments -->
     <arg name="map_file" default="$(find burger_navigation)/maps/map.yaml"/>
-    <arg name="map_movebase_file"       default="$(find burger_navigation)/maps/map_movebase.yaml"/>
-    <arg name="map_movebase_topic_name" default="map_movebase"/>
     <arg name="open_rviz" default="true"/>
     <arg name="move_forward_only" default="false"/>
     <arg name="cmd_vel_topic" default="cmd_vel" />
@@ -22,12 +20,6 @@
 
   <!-- Map server -->
   <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
-
-  <!-- Map_move_base server -->
-  <node name="map_movebase_server" pkg="map_server" type="map_server" args="$(arg map_movebase_file)" >
-    <remap from="map" to="$(arg map_movebase_topic_name)" />
-    <remap from="static_map" to="static_map_movebase" />
-  </node>
 
   <!-- AMCL -->
   <!-- <node pkg="amcl" type="amcl" name="amcl">
@@ -98,10 +90,10 @@
     <param name="laser_model_type"          value="likelihood_field"/>
 
     <param name="odom_model_type"           value="diff"/>
-    <param name="odom_alpha1"               value="0.1"/>
-    <param name="odom_alpha2"               value="0.1"/>
-    <param name="odom_alpha3"               value="0.1"/>
-    <param name="odom_alpha4"               value="0.1"/>
+    <param name="odom_alpha1"               value="0.01"/>
+    <param name="odom_alpha2"               value="0.01"/>
+    <param name="odom_alpha3"               value="0.01"/>
+    <param name="odom_alpha4"               value="0.01"/>
     <param name="odom_frame_id"             value="/odom"/>
     <param name="base_frame_id"             value="/base_footprint"/>
     <param name="global_frame_id"           value="/map"/>
@@ -118,7 +110,6 @@
     <rosparam file="$(find burger_navigation)/param/dwa_local_planner_params_burger.yaml" command="load" />
     <remap from="cmd_vel" to="$(arg cmd_vel_topic)"/>
     <remap from="odom" to="$(arg odom_topic)"/>
-    <remap from="map" to="$(arg map_movebase_topic_name)" />
     <param name="DWAPlannerROS/min_vel_x" value="0.0" if="$(arg move_forward_only)" />
 
     <param name="local_costmap/global_frame"             value="odom"/>
@@ -131,7 +122,7 @@
 
   <!-- rviz -->
   <group if="$(arg open_rviz)"> 
-    <node pkg="rviz" type="rviz" name="rviz" required="true" args="-d $(find burger_war)/rviz/rvizConfig.rviz">
+    <node pkg="rviz" type="rviz" name="rviz" required="true" args="-d $(find burger_navigation)/rviz/burger_navigation.rviz">
       <remap from="/move_base_simple/goal" to="move_base_simple/goal"/>
     </node>
   </group>

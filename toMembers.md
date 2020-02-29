@@ -47,8 +47,8 @@ $ git fetch upstream
 ```
 ```bash:
 # 更新を反映する
-$ git merge master_stream
-$ git merge upstream
+$ git merge master_stream/master
+$ git merge upstream/master
 ```
 ```bash:
 # ちゃんと設定できているかどうかの確認
