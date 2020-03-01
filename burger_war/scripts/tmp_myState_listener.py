@@ -133,7 +133,7 @@ class MyStateBot(object):
         enemy = self.rectData.rect_r
         enemy_target = self.rectData.rect_g
 
-        self.isFoundEnemyTarget = enemy_target.center != (-1.0, -1.0) and enemy_target.length[1] > 80.0
+        self.isFoundEnemyTarget = enemy_target.center != (-1.0, -1.0) and enemy_target.length[1] > 100.0
         self.isFoundEnemy = self.isFoundEnemyTarget or (enemy.center != (-1.0, -1.0) and enemy.length[0] > 60.0)
         twist = Twist()
 
