@@ -78,15 +78,14 @@ class MyStateBot(object):
                 self.pose_y = trans[1]
                 nearestTargetName_pre = nearestTargetName
                 target_pos = PoseStamped()
-
-                if nearestTargetName == "":
-                    self.my_state_text.text = "All Targets are MINE !!!!!"
-                elif self.isFoundEnemy:
+                nearestTargetName = tmp_targetsMap.getNearestTarget(dcopy(self.map), dcopy(self.pose_x), dcopy(self.pose_y), self.war_state)
+                if self.isFoundEnemy:
                     nearestTargetName = "ROBOT"
                     self.my_state_text.text = "Current Target : ROBOT"
+                elif nearestTargetName == "":
+                    self.my_state_text.text = "All Targets are MINE !!!!!"
                 else:
                     self.my_state_text.text = "Current Target : " + nearestTargetName
-                    nearestTargetName = tmp_targetsMap.getNearestTarget(dcopy(self.map), dcopy(self.pose_x), dcopy(self.pose_y), self.war_state)
                     nearestTargetPos = dcopy(self.map[nearestTargetName])
                     target_pos = tmp_targetsMap.getGoal(nearestTargetPos, nearestTargetName)
                     target_pos.header.stamp = rospy.Time.now()
