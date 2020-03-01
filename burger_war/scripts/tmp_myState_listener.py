@@ -15,6 +15,12 @@ from burger_war.msg import CvRect
 from geometry_msgs.msg import Twist
 from jsk_rviz_plugins.msg import OverlayText
 
+import actionlib
+from actionlib_msgs.msg import *
+# from geometry_msgs.msg import Pose, PoseWithCovarianceStamped, Point, Quaternion, Twist
+from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
+# from math import pi
+
 
 class MyStateBot(object):
 
@@ -58,11 +64,12 @@ class MyStateBot(object):
     def strategy(self):
 
         r = rospy.Rate(self.r)
-        nearestTargetName = None
+        nearestTargetName = "ROBOT"
         tf_listener = tf.TransformListener()
         # tf.waitForTransform('map','base_footprint',rospy.Time(0), rospy.Duration(10.0))
         # tf_listener.waitForTransform('map','base_footprint',rospy.Time(), rospy.Duration(4.0))
         sleep(2)
+
         while not rospy.is_shutdown():
             try:
                 # tf_listener.waitForTransform('map','base_footprint',rospy.Time.now(), rospy.Duration(4.0))
@@ -70,12 +77,16 @@ class MyStateBot(object):
                 self.pose_x = trans[0]
                 self.pose_y = trans[1]
                 nearestTargetName_pre = nearestTargetName
-                nearestTargetName = tmp_targetsMap.getNearestTarget(dcopy(self.map), dcopy(self.pose_x), dcopy(self.pose_y), self.war_state)
+                target_pos = PoseStamped()
 
                 if nearestTargetName == "":
                     self.my_state_text.text = "All Targets are MINE !!!!!"
+                elif self.isFoundEnemy:
+                    nearestTargetName = "ROBOT"
+                    self.my_state_text.text = "Current Target : ROBOT"
                 else:
                     self.my_state_text.text = "Current Target : " + nearestTargetName
+                    nearestTargetName = tmp_targetsMap.getNearestTarget(dcopy(self.map), dcopy(self.pose_x), dcopy(self.pose_y), self.war_state)
                     nearestTargetPos = dcopy(self.map[nearestTargetName])
                     target_pos = tmp_targetsMap.getGoal(nearestTargetPos, nearestTargetName)
                     target_pos.header.stamp = rospy.Time.now()
@@ -102,7 +113,7 @@ class MyStateBot(object):
         if len(data.status_list) > 0:
             # 状態が取得できた場合
             status = data.status_list[0]
-            rospy.logerr(status.status)
+            # rospy.logerr(status.status)
             # if status.status == 3:
             #     print("GOAL!!!!!")
 
@@ -115,7 +126,7 @@ class MyStateBot(object):
         enemy_target = self.rectData.rect_g
 
         isFoundEnemyTarget = enemy_target.center != (-1.0, -1.0)
-        self.isFoundEnemy = (enemy.center != (-1.0, -1.0)) or isFoundEnemyTarget
+        self.isFoundEnemy = isFoundEnemyTarget  # or (enemy.center != (-1.0, -1.0))
         twist = Twist()
 
         if isFoundEnemyTarget:
@@ -123,11 +134,11 @@ class MyStateBot(object):
             self.integral += self.error * self.dt
             twist.angular.z = self.Kp * self.error + self.Kd * (self.error - self.error_pre) / self.dt  # + self.Ki * self.integral
             self.twist_pub.publish(twist)
-        elif self.isFoundEnemy:
-            self.error = self.target_001 - enemy.center[0]
-            self.integral += self.error * self.dt
-            twist.angular.z = self.Kp * self.error + self.Kd * (self.error - self.error_pre) / self.dt  # + self.Ki * self.integral
-            self.twist_pub.publish(twist)
+        # elif self.isFoundEnemy:
+        #     self.error = self.target_001 - enemy.center[0]
+        #     self.integral += self.error * self.dt
+        #     twist.angular.z = self.Kp * self.error + self.Kd * (self.error - self.error_pre) / self.dt  # + self.Ki * self.integral
+        #     self.twist_pub.publish(twist)
         else:
             self.error = 0.0
             self.error_pre = 0.0
