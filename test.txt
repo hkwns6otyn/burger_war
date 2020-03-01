@@ -4,6 +4,7 @@ bash scripts/sim_with_judge.sh
 roslaunch burger_war setup_sim.launch
 
 bash scripts/start.sh
+bash scripts/start2.sh 2
 
 roslaunch burger_war burger_teleop.launch
 
