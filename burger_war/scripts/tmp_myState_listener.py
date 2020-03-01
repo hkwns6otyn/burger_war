@@ -148,6 +148,8 @@ class MyStateBot(object):
             self.error = self.target_001 - enemy.center[0]
             self.integral += self.error * self.dt
             twist.angular.z = self.Kp * self.error + self.Kd * (self.error - self.error_pre) / self.dt  # + self.Ki * self.integral
+            if self.range_data > 0.25:
+                twist.linear.x = -0.22
             self.twist_pub.publish(twist)
         else:
             self.error = 0.0
