@@ -118,21 +118,7 @@ Visualization Manager:
           Value: true
         enemy_bot/base_footprint:
           Value: true
-        enemy_bot/base_link:
-          Value: true
-        enemy_bot/base_scan:
-          Value: true
-        enemy_bot/caster_back_link:
-          Value: true
-        enemy_bot/imu_link:
-          Value: true
-        enemy_bot/map:
-          Value: true
         enemy_bot/odom:
-          Value: true
-        enemy_bot/wheel_left_link:
-          Value: true
-        enemy_bot/wheel_right_link:
           Value: true
         imu_link:
           Value: true
@@ -367,12 +353,12 @@ Visualization Manager:
       Topic: /my_state
       Value: true
       font: DejaVu Sans Mono
-      height: 128
+      height: 150
       left: 0
       line width: 2
       text size: 12
       top: 0
-      width: 450
+      width: 500
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -427,5 +413,5 @@ Window Geometry:
   Views:
     collapsed: true
   Width: 1855
-  X: 65
-  Y: 24
+  X: 738
+  Y: 28
