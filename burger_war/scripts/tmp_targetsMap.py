@@ -5,6 +5,7 @@ from geometry_msgs.msg import PoseStamped
 from burger_war.msg import war_state
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 
+
 def getTargetsMapOnGAZEBO():
     Targets = {
         "FriedShrimp_N":    [0.0,       +0.35/2.0],
@@ -112,6 +113,7 @@ def getGoal2(targetPos, targetName):
     target_pos.pose.orientation.w = goalDire[3]
 
     return target_pos
+
 
 def getNearestTarget(target_map, x, y, war_state):
     war_state_dict = converter(war_state)
