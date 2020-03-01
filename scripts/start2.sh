@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 bash scripts/reset.sh
 
 # set judge server state "running"
