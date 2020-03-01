@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # https://qiita.com/srs/items/99d1ff2207772859763c
 
 import rospy
@@ -8,11 +10,9 @@ from cv_bridge import CvBridge, CvBridgeError
 from burger_war.msg import CvRect
 
 
-class Cv_cam():
+class Cv_cam2():
 
-    def __init__(self):
-        rospy.init_node("cv_cam")
-        rospy.on_shutdown(self.cleanup)
+    def __init__(self,showLog = False,showCam = False):
         self.bridge = CvBridge()
         self.image_sub = rospy.Subscriber("image_raw", Image, self.image_callback)
         self.cvrect_pub = rospy.Publisher("cv_rect", CvRect, queue_size=1000)
@@ -20,6 +20,9 @@ class Cv_cam():
         self.rect_center = None
         self.rect_length = None
         self.rect_area = None
+
+        self.showLog = showLog
+        self.showCam = showCam
 
     def image_callback(self, ros_image):
         try:
@@ -36,9 +39,10 @@ class Cv_cam():
         [cvrect.rect_r.area, cvrect.rect_g.area, cvrect.rect_b.area] = self.rect_area
 
         self.cvrect_pub.publish(cvrect)
-        print(cvrect)
-        print("===================")
-        cv2.waitKey(1)
+        if self.showLog:
+            rospy.loginfo(cvrect)
+            rospy.loginfo("===================")
+        cv2.waitKey(1)        
 
     def get_rect(self, image, debug=False):
         hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
@@ -58,22 +62,14 @@ class Cv_cam():
         lower = np.array([115, 10, 0])
         upper = np.array([125, 255, 255])
         mask_b = cv2.inRange(hsv, lower, upper)
-<<<<<<< HEAD
-
-        if int(cv2.__version__[0]) > 2:
-=======
         
         if int(cv2.__version__[0]) > 2:
             # cv2.__version__ > 2.x
->>>>>>> upstream/master
             _, contours_r, _ = cv2.findContours(mask_r, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
             _, contours_g, _ = cv2.findContours(mask_g, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
             _, contours_b, _ = cv2.findContours(mask_b, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         elif int(cv2.__version__[0]) == 2:
-<<<<<<< HEAD
-=======
             # cv2.__version__ == 2.x
->>>>>>> upstream/master
             contours_r, _ = cv2.findContours(mask_r, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
             contours_g, _ = cv2.findContours(mask_g, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
             contours_b, _ = cv2.findContours(mask_b, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
@@ -132,7 +128,7 @@ class Cv_cam():
         self.rect_length = [r_length, g_length, b_length]
         self.rect_area = [r_length[0] * r_length[1], g_length[0] * g_length[1], b_length[0] * b_length[1]]
 
-        if debug:
+        if self.showCam:
             display = image.copy()
             if r_area_max > RECT_AREA_THRESHOLD:
                 cv2.rectangle(display, (r_max[0], r_max[1]), (r_max[0] + r_max[2], r_max[1] + r_max[3]), (100, 100, 255), thickness=3)
@@ -140,12 +136,16 @@ class Cv_cam():
                 cv2.rectangle(display, (g_max[0], g_max[1]), (g_max[0] + g_max[2], g_max[1] + g_max[3]), (100, 255, 100), thickness=3)
             if b_area_max > RECT_AREA_THRESHOLD:
                 cv2.rectangle(display, (b_max[0], b_max[1]), (b_max[0] + b_max[2], b_max[1] + b_max[3]), (255, 100, 100), thickness=3)
-            cv2.imshow("make region", display)
+            cv2.imshow("My vision", display)
 
     def cleanup(self):
         cv2.destroyAllWindows()
 
+    def strategy(self):
+        rospy.on_shutdown(self.cleanup)
+        rospy.spin()
 
 if __name__ == '__main__':
-    Cv_cam()
-    rospy.spin()
+    rospy.init_node("cv_cam")
+    bot = Cv_cam2(showLog=False,showCam=True)
+    bot.strategy()
