@@ -41,7 +41,7 @@ def getTargetsMap():
     return Targets
 
 
-distance = 0.25  # magic parm of distance to the target
+distance = 0.3  # magic parm of distance to the target
 
 
 def getGoal(targetPos, targetName):
